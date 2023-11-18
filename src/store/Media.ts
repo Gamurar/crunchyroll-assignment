@@ -2,10 +2,10 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { MediaEntry } from "../types/MediaItem";
 import { createMedia, fetchMedia, removeMedia, updateMedia } from "../rxjs";
 
-interface MediaFilter {
+type MediaFilter = {
   type?: string[];
   search?: string;
-}
+};
 
 type UpdateArgs = {
   id: number;
@@ -14,16 +14,16 @@ type UpdateArgs = {
 
 export class Media {
   data: MediaEntry[] = [];
+  editMediaId?: number;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  async fetchData(
-    { type, search }: MediaFilter = {
-      type: ["movie", "tv-show", "game"],
-    }
-  ) {
+  fetchData({
+    type = ["movie", "tv-show", "game"],
+    search,
+  }: MediaFilter) {
     fetchMedia({
       type,
       q: search,
@@ -34,31 +34,31 @@ export class Media {
         runInAction(() => {
           this.data = data;
         });
-      }
+      },
     });
   }
 
-  async remove({ id }: { id: number }) {
+  remove({ id }: { id: number }) {
     removeMedia(id).subscribe({
       next: () => {
         runInAction(() => {
           this.data = this.data.filter((item) => item.id !== id);
         });
-      }
+      },
     });
   }
 
-  async create(data: Omit<MediaEntry, "id">) {
+  create(data: Omit<MediaEntry, "id">) {
     createMedia(data).subscribe({
       next: (response) => {
         runInAction(() => {
           this.data = [response, ...this.data];
         });
-      }
+      },
     });
-  };
+  }
 
-  async update({id, data} : UpdateArgs) {
+  update({ id, data }: UpdateArgs) {
     updateMedia(id, data).subscribe({
       next: (response) => {
         runInAction(() => {
@@ -71,5 +71,13 @@ export class Media {
         });
       },
     });
+  }
+
+  setEditMediaId(id: number) {
+    this.editMediaId = id;
+  }
+
+  clearEditMediaId() {
+    this.editMediaId = undefined;
   }
 }

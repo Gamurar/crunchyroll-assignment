@@ -10,8 +10,8 @@ import {
 } from "@mui/material";
 import { Control, Controller } from "react-hook-form";
 import { MediaItemInputs } from "./MediaForm";
-import { DatePicker } from "@mui/x-date-pickers";
-import { mediaTypeToLabel } from "../../utils/mediaTypeToLabel";
+import { YearSelect } from "./YearSelect";
+import { MediaTypeSelect } from "../MediaTypeSelect/MediaTypeSelect";
 
 type Props = {
   control: Control<MediaItemInputs, unknown>;
@@ -42,23 +42,8 @@ export function Form({ control }: Props) {
           control={control}
           name="type"
           rules={{ required: true }}
-          render={({ field: { value, ...field } }) => (
-            <FormControl fullWidth>
-              <InputLabel id="type-label">Type</InputLabel>
-              <Select
-                {...field}
-                fullWidth
-                label="Type"
-                value={value}
-                labelId="type-label"
-              >
-                <MenuItem value="movie">{mediaTypeToLabel("movie")}</MenuItem>
-                <MenuItem value="tv-show">
-                  {mediaTypeToLabel("tv-show")}
-                </MenuItem>
-                <MenuItem value="game">{mediaTypeToLabel("game")}</MenuItem>
-              </Select>
-            </FormControl>
+          render={({ field: { value, onChange } }) => (
+            <MediaTypeSelect value={value} onChange={onChange} />
           )}
         />
       </Grid>
@@ -88,20 +73,12 @@ export function Form({ control }: Props) {
             name="releaseYear"
             control={control}
             rules={{ required: true }}
-            render={({ field: { value, ...field }, formState: { errors } }) => (
-              <DatePicker
-                {...field}
-                views={["year"]}
-                value={value || null}
-                sx={{ width: "100%" }}
-                label="Release Year"
-                disableFuture
-                slotProps={{
-                  textField: {
-                    error: !!errors.releaseYear,
-                  },
-                }}
-                disableHighlightToday
+            render={({ field: { value, onChange }, formState: { errors } }) => (
+              <YearSelect
+                error={!!errors.releaseYear}
+                value={value}
+                label="Release year"
+                onChange={onChange}
               />
             )}
           />

@@ -16,6 +16,7 @@ type Props = {
 export function MediaItem({ item, onEditMedia }: Props) {
   function onEdit() {
     onEditMedia(item);
+    media.setEditMediaId(item.id);
   }
 
   function onDelete() {

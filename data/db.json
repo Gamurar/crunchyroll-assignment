@@ -49,6 +49,14 @@
       "rating": 10
     },
     {
+      "id": 7,
+      "title": "TV Show 3",
+      "type": "tv-show",
+      "genre": "Drama",
+      "releaseYear": 2020,
+      "rating": 9
+    },
+    {
       "id": 8,
       "title": "Game 1",
       "type": "game",
@@ -63,46 +71,6 @@
       "genre": "None",
       "releaseYear": 2020,
       "rating": 0
-    },
-    {
-      "title": "fdfdfdf",
-      "type": "movie",
-      "genre": "Drama",
-      "rating": 7,
-      "releaseYear": 2018,
-      "id": 10
-    },
-    {
-      "title": "1",
-      "type": "movie",
-      "genre": "Action",
-      "rating": 7,
-      "releaseYear": 2022,
-      "id": 11
-    },
-    {
-      "title": "2",
-      "type": "movie",
-      "genre": "Action",
-      "rating": 7,
-      "releaseYear": 2022,
-      "id": 12
-    },
-    {
-      "title": "aaaa",
-      "type": "movie",
-      "genre": "Action",
-      "rating": 7,
-      "releaseYear": 3203,
-      "id": 13
-    },
-    {
-      "title": "11",
-      "type": "movie",
-      "genre": "Action",
-      "rating": 7,
-      "releaseYear": 2021,
-      "id": 14
     }
   ]
 }

@@ -7,56 +7,48 @@ import { useForm } from "react-hook-form";
 import { MediaEntry } from "../../types/MediaItem";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs, { Dayjs } from "dayjs";
 import { media } from "../../store";
 import { useEffect } from "react";
 import { Form } from "./Form";
+import { observer } from "mobx-react-lite";
 
 type Props = {
   handleClose: () => void;
   open: boolean;
-  mediaEntryToEdit?: MediaEntry;
 };
 
-export type MediaItemInputs = Omit<MediaEntry, "id, releaseYear"> & {
-  releaseYear: Dayjs;
-};
+export type MediaItemInputs = Omit<MediaEntry, "id">
 
-export function MediaForm({ handleClose, open, mediaEntryToEdit }: Props) {
-  const defaultValues = {
+export const MediaForm = observer(({ handleClose, open }: Props) => {
+  const editMediaId = media.editMediaId;
+  const editMediaEntry = media.data.find((item) => item.id === editMediaId);
+
+  const defaultValues: MediaItemInputs = {
     title: "",
     type: "movie",
     genre: "Action",
     rating: 7,
+    releaseYear: 2020
   };
 
   const { handleSubmit, control, reset } = useForm<MediaItemInputs>({
-    defaultValues: mediaEntryToEdit || defaultValues,
+    defaultValues: editMediaEntry || defaultValues,
   });
 
   function onSubmit(data: MediaItemInputs) {
-    const formData = {
-      ...data,
-      releaseYear: data.releaseYear.year(),
-    };
-
-    if (mediaEntryToEdit) {
-      media.update({ id: mediaEntryToEdit.id, data: formData });
+    if (editMediaId) {
+      media.update({ id: editMediaId, data });
     } else {
-      media.create(formData);
+      media.create(data);
     }
 
     onClose();
   }
 
   useEffect(() => {
-    if (!mediaEntryToEdit) return;
-    const date = "01-01-" + mediaEntryToEdit?.releaseYear;
-    reset({
-      ...mediaEntryToEdit,
-      releaseYear: dayjs(date, "MM-DD-YYYY"),
-    });
-  }, [mediaEntryToEdit, reset]);
+    if (!editMediaEntry) return;
+    reset(editMediaEntry);
+  }, [editMediaEntry, reset]);
 
   function onClose() {
     reset(defaultValues);
@@ -67,7 +59,7 @@ export function MediaForm({ handleClose, open, mediaEntryToEdit }: Props) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Dialog onClose={onClose} open={open} fullWidth>
         <DialogTitle>
-          {mediaEntryToEdit ? "Edit media" : "Add new media"}
+          {editMediaEntry ? "Edit media" : "Add new media"}
         </DialogTitle>
         <DialogContent>
          <Form control={control} />
@@ -81,4 +73,4 @@ export function MediaForm({ handleClose, open, mediaEntryToEdit }: Props) {
       </Dialog>
     </LocalizationProvider>
   );
-}
+});

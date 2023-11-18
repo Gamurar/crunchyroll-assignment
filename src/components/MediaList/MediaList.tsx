@@ -1,15 +1,13 @@
 import { observer } from "mobx-react-lite";
 import Grid from "@mui/material/Grid";
 import { MediaItem } from "../MediaItem/MediaItem";
-import { Media } from "../../store/Media";
-import { MediaEntry } from "../../types/MediaItem";
+import { media } from "../../store";
 
-interface Props {
-  media: Media;
-  onEditMedia: (mediaItem: MediaEntry) => void;
+type Props = {
+  onEditMedia: () => void;
 }
 
-export const MediaList = observer(({ media, onEditMedia }: Props) => {
+export const MediaList = observer(({ onEditMedia }: Props) => {
   return (
     <Grid container gap={3} direction="column">
       {media.data.map((item) => (

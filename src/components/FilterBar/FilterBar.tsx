@@ -1,18 +1,10 @@
-import {
-  TextField,
-  Paper,
-  InputLabel,
-  Select,
-  FormControl,
-  MenuItem,
-  Button,
-} from "@mui/material";
+import { TextField, Paper, Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { media } from "../../store";
 import { useEffect, useState } from "react";
-import { mediaTypeToLabel } from "../../utils/mediaTypeToLabel";
+import { MediaTypeSelect } from "../MediaTypeSelect/MediaTypeSelect";
 
-export const FilterBar = () => {
+export function FilterBar() {
   const [search, setSearch] = useState<string>("");
   const [type, setType] = useState<string>("");
   const touchedFilter = search || type;
@@ -42,21 +34,7 @@ export const FilterBar = () => {
           />
         </Grid>
         <Grid item md={3} xs={12} sm={6}>
-          <FormControl fullWidth>
-            <InputLabel>Type</InputLabel>
-            <Select
-              value={type}
-              label="Type"
-              sx={{ textAlign: "left" }}
-              onChange={({ target: { value } }) => {
-                setType(value);
-              }}
-            >
-              <MenuItem value="movie">{mediaTypeToLabel("movie")}</MenuItem>
-              <MenuItem value="tv-show">{mediaTypeToLabel("tv-show")}</MenuItem>
-              <MenuItem value="game">{mediaTypeToLabel("game")}</MenuItem>
-            </Select>
-          </FormControl>
+          <MediaTypeSelect value={type} onChange={setType} />
         </Grid>
         <Grid container item md={5} xs={12} sm={12} justifyContent="end">
           <Button disabled={!touchedFilter} onClick={resetFilter}>
@@ -66,4 +44,4 @@ export const FilterBar = () => {
       </Grid>
     </Paper>
   );
-};
+}

@@ -6,24 +6,21 @@ import { FilterBar } from "../FilterBar/FilterBar";
 import { MediaForm } from "../MediaForm/MediaForm";
 import { useState } from "react";
 import { Box } from "@mui/material";
-import { MediaEntry } from "../../types/MediaItem";
 
 export function MediaApplication() {
   const [open, setOpen] = useState(false);
-  const [mediaEntryToEdit, setMediaEntryToEdit] = useState<MediaEntry | undefined>(undefined);
 
   function onAddMedia() {
-    setMediaEntryToEdit(undefined);
+    media.clearEditMediaId();
     setOpen(true);
   }
 
-  function onEditMedia(mediaEntry: MediaEntry) {
-    setMediaEntryToEdit(mediaEntry);
+  function onEditMedia() {
     setOpen(true);
   }
 
   const handleClose = () => {
-    setMediaEntryToEdit(undefined);
+    media.clearEditMediaId();
     setOpen(false);
   };
 
@@ -34,9 +31,9 @@ export function MediaApplication() {
         <Box my={1} flex={1}>
           <FilterBar />
         </Box>
-        <MediaList media={media} onEditMedia={onEditMedia} />
+        <MediaList onEditMedia={onEditMedia} />
       </Grid>
-      <MediaForm open={open} handleClose={handleClose} mediaEntryToEdit={mediaEntryToEdit} />
+      <MediaForm open={open} handleClose={handleClose} />
     </Grid>
   );
 }
