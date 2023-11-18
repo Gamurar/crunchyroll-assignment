@@ -30,7 +30,7 @@ export class Media {
       _sort: "id",
       _order: "desc",
     }).subscribe({
-      next: (data) => {
+      next: (data: MediaEntry[]) => {
         runInAction(() => {
           this.data = data;
         });
@@ -50,7 +50,7 @@ export class Media {
 
   create(data: Omit<MediaEntry, "id">) {
     createMedia(data).subscribe({
-      next: (response) => {
+      next: (response: MediaEntry) => {
         runInAction(() => {
           this.data = [response, ...this.data];
         });
